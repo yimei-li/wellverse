@@ -1,4 +1,28 @@
 import streamlit as st
+import random
+
+# Apply custom CSS for the background image
+st.markdown(
+    """
+    <style>
+    /* Background image settings */
+    .stApp {
+        background-image: url("background.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #ffffff;
+    }
+    /* Adjust the main panel's opacity and padding */
+    .stApp > div:first-child {
+        padding-top: 5vh;
+        padding-bottom: 5vh;
+        background: rgba(0, 0, 0, 0.6);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Title and header for the app
 st.title("Health Risk & Anti-Aging Prediction")
@@ -29,7 +53,6 @@ immune_strength = st.sidebar.slider("Immune System Strength (1-10)", 1, 10, 7)
 genetic_predisposition = st.sidebar.slider("Genetic Predisposition to Diseases (1-10)", 1, 10, 5)
 
 # Mockup predictions (replace with model integration)
-import random
 def predict():
     return {
         "Anti-Aging Score": f"{random.uniform(60, 100):.1f}%",
@@ -41,9 +64,31 @@ def predict():
         "Lyme Disease Risk (Monthly)": f"{random.uniform(1, 20):.1f}%"
     }
 
-# Display predictions
-st.subheader("Prediction Results")
-predictions = predict()
+# Mockup health plan
+def personalized_health_plan():
+    return [
+        "Diet: Incorporate more fruits, vegetables, and whole grains.",
+        "Exercise: Aim for at least 150 minutes of moderate exercise weekly.",
+        "Sleep: Maintain a consistent sleep schedule with 7-8 hours per night.",
+        "Stress Management: Practice daily mindfulness or breathing exercises.",
+        "Hydration: Drink at least 2 liters of water daily.",
+        "Immune Support: Include vitamin C and zinc in your diet."
+    ]
 
-for key, value in predictions.items():
-    st.metric(label=key, value=value)
+# Layout for health plan and predictions
+st.subheader("")
+col1, col2 = st.columns(2)
+
+# Display health plan in the first column
+with col1:
+    st.markdown("### Personalized Health Plan")
+    health_plan = personalized_health_plan()
+    for recommendation in health_plan:
+        st.write("- " + recommendation)
+
+# Display predictions in the second column
+with col2:
+    st.markdown("### Prediction Results")
+    predictions = predict()
+    for key, value in predictions.items():
+        st.metric(label=key, value=value)
